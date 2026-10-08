@@ -7,10 +7,10 @@ from .models import Transaction
 from .forms import PaymentForm
 from dotenv import load_dotenv
 
-# Load environment variables
+
 load_dotenv()
 
-# Retrieve variables from the environment
+
 CONSUMER_KEY = os.getenv("CONSUMER_KEY")
 CONSUMER_SECRET = os.getenv("CONSUMER_SECRET")
 MPESA_PASSKEY = os.getenv("MPESA_PASSKEY")
@@ -19,7 +19,7 @@ MPESA_SHORTCODE = os.getenv("MPESA_SHORTCODE")
 CALLBACK_URL = os.getenv("CALLBACK_URL")
 MPESA_BASE_URL = os.getenv("MPESA_BASE_URL")
 
-# Phone number formatting and validation
+
 def format_phone_number(phone):
     phone = phone.replace("+", "")
     if re.match(r"^254\d{9}$", phone):
@@ -29,7 +29,7 @@ def format_phone_number(phone):
     else:
         raise ValueError("Invalid phone number format")
 
-# Generate M-Pesa access token
+
 def generate_access_token():
     try:
         credentials = f"{CONSUMER_KEY}:{CONSUMER_SECRET}"
@@ -52,7 +52,7 @@ def generate_access_token():
     except requests.RequestException as e:
         raise Exception(f"Failed to connect to M-Pesa: {str(e)}")
 
-# Initiate STK Push and handle response
+
 def initiate_stk_push(phone, amount):
     try:
         token = generate_access_token()
@@ -89,7 +89,7 @@ def initiate_stk_push(phone, amount):
         print(f"Failed to initiate STK Push: {str(e)}")
         return e
 
-# Payment View
+
 def payment_view(request):
     if request.method == "POST":
         form = PaymentForm(request.POST)
@@ -117,7 +117,7 @@ def payment_view(request):
 
     return render(request, "payment_form.html", {"form": form})
 
-# Query STK Push status
+
 def query_stk_push(checkout_request_id):
     print("Quering...")
     try:
